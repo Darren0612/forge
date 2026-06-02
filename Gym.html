@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Forge — Every Rep Shapes You</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables - Dual Theme System */
+        :root[data-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #0a0a0e 0%, #121218 100%);
+            --surface-color: #1a1a24;
+            --surface-hover: #222230;
+            --surface-inset: #101016;
+            --primary-color: #00f2fe;
+            --primary-glow: rgba(0, 242, 254, 0.2);
+            --accent-color: #4facfe;
+            --text-color: #f5f5fa;
+            --text-muted: #7e7e96;
+            --border-color: #262637;
+            --success-color: #00e676;
+            --success-glow: rgba(0, 230, 118, 0.15);
+            --danger-color: #ff3366;
+            --warning-color: #ffb300;
+            --modal-overlay: rgba(5, 5, 10, 0.85);
+            --nav-bg: rgba(26, 26, 36, 0.6);
+            --nav-shadow: rgba(0, 0, 0, 0.3);
+            --google-bg: #ffffff;
+            --google-text: #1f1f1f;
+            --google-border: #747775;
+        }
+
+        :root[data-theme="light"] {
+            --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            --surface-color: #ffffff;
+            --surface-hover: #f8fafc;
+            --surface-inset: #f1f5f9;
+            --primary-color: #0ea5e9;
+            --primary-glow: rgba(14, 165, 233, 0.2);
+            --accent-color: #2563eb;
+            --text-color: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --success-color: #10b981;
+            --success-glow: rgba(16, 185, 129, 0.1);
+            --danger-color: #ef4444;
+            --warning-color: #eab308;
+            --modal-overlay: rgba(15, 23, 42, 0.6);
+            --nav-bg: rgba(255, 255, 255, 0.75);
+            --nav-shadow: rgba(148, 163, 184, 0.12);
+            --google-bg: #ffffff;
+            --google-text: #1f1f1f;
+            --google-border: #747775;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 1200px;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 90px;
+        }
+
+        /* TOP GLOBAL HEADER BAR */
+        .top-navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--nav-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            position: sticky;
+            top: 0;
+            z-index: 1500;
+            box-shadow: 0 4px 20px var(--nav-shadow);
+            transition: background 0.4s ease, border 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .header-left-side {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .theme-toggle-btn {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: 0.2s;
+            box-shadow: 0 2px 10px var(--nav-shadow);
+        }
+
+        .desktop-nav-tabs {
+            display: none;
+            gap: 8px;
+        }
+
+        .desktop-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 8px 18px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .desktop-tab-btn.active {
+            background: var(--surface-color);
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px var(--nav-shadow);
+        }
+
+        /* GATEWAY AUTH SCREEN */
+        .auth-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-gradient);
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .auth-logo h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .auth-logo p {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 30px;
+        }
+
+        .auth-tabs {
+            display: flex;
+            background: var(--surface-inset);
+            padding: 4px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .auth-tab.active {
+            background: var(--surface-color);
+            color: var(--text-color);
+        }
+
+        .auth-form {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .auth-form.active { display: flex; }
+
+        .input-wrapper { text-align: left; }
+        .input-wrapper label { font-size: 0.75rem; color: var(--text-muted); font-weight: 700; margin-bottom: 5px; display: block; }
+
+        .auth-input {
+            width: 100%;
+            background: var(--surface-inset);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .btn-auth-submit {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        /* Google Login Button Aesthetic Styling */
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 18px 0;
+        }
+
+        .auth-divider::before, .auth-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .auth-divider:not(:empty)::before { margin-right: .5em; }
+        .auth-divider:not(:empty)::after { margin-left: .5em; }
+
+        .btn-google-login {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: var(--google-bg);
+            color: var(--google-text);
+            border: 1px solid var(--google-border);
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn-google-login:hover {
+            background: #f7f9fa;
+        }
+
+        .btn-google-login:active {
+            transform: scale(0.98);
+        }
+
+        .btn-google-login svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* VIEW CONTAINER SYSTEM */
+        .view-section {
+            display: none;
+            padding: 20px;
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .view-section.active { display: block; }
+        #nav-profile-view.view-section.active { max-width: 100%; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .forge-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* FEED POST */
+        .feed-post {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .post-header { display: flex; align-items: center; gap: 12px; padding: 15px; }
+        .post-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); padding: 2px; }
+        .post-avatar-inner { width: 100%; height: 100%; border-radius: 50%; background: var(--surface-color); display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; }
+        .post-user-info h5 { font-size: 0.9rem; font-weight: 700; }
+        .post-user-info span { font-size: 0.75rem; color: var(--text-muted); }
+        .post-image { width: 100%; aspect-ratio: 4 / 3; background: var(--surface-inset); display: flex; align-items: center; justify-content: center; }
+        .post-image-placeholder { text-align: center; color: var(--text-muted); }
+        .post-image-placeholder svg { width: 50px; height: 50px; opacity: 0.4; margin-bottom: 8px; }
+        .post-content { padding: 0 15px 15px 15px; font-size: 0.9rem; line-height: 1.5; }
+
+        /* WORKOUT ELEMENTS */
+        .motivation-banner {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.06) 0%, rgba(37, 99, 235, 0.06) 100%);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        .motivation-banner h4 { font-size: 0.85rem; color: var(--primary-color); margin-bottom: 4px; text-transform: uppercase; }
+        .motivation-banner p { font-style: italic; font-size: 0.9rem; }
+
+        .btn-start-workout {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: #fff;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 6px 20px var(--primary-glow);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        .section-title-alt { font-size: 0.8rem; font-weight: 800; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .routines-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 25px; }
+        .routine-card { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; cursor: pointer; transition: 0.2s; }
+        .routine-card h3 { font-size: 1rem; margin-bottom: 4px; }
+        .routine-card p { font-size: 0.8rem; color: var(--text-muted); }
+
+        /* PROFILE IDENTITY DECORATION */
+        .profile-header-card { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 20px; padding: 24px; margin-bottom: 25px; }
+        .profile-main-meta { display: flex; align-items: center; gap: 25px; margin-bottom: 20px; }
+        .profile-avatar-big { width: 75px; height: 75px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-color), var(--accent-color)); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; color: #fff; box-shadow: 0 4px 15px var(--primary-glow); }
+        .profile-stats-row { display: flex; gap: 20px; flex-grow: 1; justify-content: space-around; }
+        .stat-meta-box { text-align: center; }
+        .stat-meta-box .num { font-size: 1.2rem; font-weight: 800; color: var(--text-color); }
+        .stat-meta-box .lbl { font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
+        
+        .profile-bio h4 { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
+        .profile-general-info-row { display: flex; gap: 10px; margin-bottom: 12px; }
+        .info-badge { background: var(--surface-inset); border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; color: var(--text-color); }
+        .info-badge span { color: var(--primary-color); }
+        .profile-bio p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+
+        /* INTERACTIVE CLICKABLE DASHBOARD GRID MATRIX */
+        .dashboard-grid-4x4 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+        .dash-grid-card-clickable { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 16px; padding: 22px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s ease; }
+        .dash-grid-card-clickable:hover { border-color: var(--primary-color); background: var(--surface-hover); transform: translateY(-2px); }
+        .dash-card-title-group { display: flex; align-items: center; gap: 14px; }
+        .dash-card-title-group .icon { font-size: 1.4rem; }
+        .dash-grid-card-clickable h4 { font-size: 0.95rem; color: var(--text-color); font-weight: 700; }
+        .dash-action-arrow { color: var(--text-muted); font-size: 0.9rem; font-weight: 700; }
+
+        /* POPUP MODAL OVERLAY SHEET */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--modal-overlay); backdrop-filter: blur(8px); z-index: 2500; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .modal-overlay.active { display: flex; }
+        .modal-content-box { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 24px; width: 100%; max-width: 500px; max-height: 80vh; overflow-y: auto; padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .modal-header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; margin-bottom: 20px; }
+        .modal-header-row h3 { font-size: 1.2rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .btn-close-modal { background: var(--surface-inset); border: 1px solid var(--border-color); color: var(--text-color); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+        .muscle-dist-bar { display: flex; flex-direction: column; gap: 12px; font-size: 0.8rem; }
+        .dist-row { display: flex; align-items: center; justify-content: space-between; font-weight: 600; }
+        .dist-bar-bg { height: 8px; background: var(--surface-inset); border-radius: 4px; width: 100%; margin-top: 4px; overflow: hidden; }
+        .dist-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--accent-color)); border-radius: 4px; }
+
+        .mini-ex-history { display: flex; flex-direction: column; gap: 12px; font-size: 0.9rem; }
+        .mini-ex-item { border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; display: flex; justify-content: space-between; align-items: center;}
+        .mini-ex-item:last-child { border-bottom: none; }
+        .mini-ex-item div { font-weight: 700; }
+        .mini-ex-item span { color: var(--text-muted); font-size: 0.8rem; }
+
+        .pb-clickable-row { background: var(--surface-inset); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: border 0.2s; }
+        .pb-clickable-row:hover { border-color: var(--primary-color); }
+
+        .measure-widget { display: flex; flex-direction: column; gap: 15px; text-align: center; }
+        .measure-current { font-size: 2.5rem; font-weight: 800; color: var(--primary-color); }
+        .measure-input-grp { display: flex; gap: 8px; }
+        .measure-input-grp input { width: 100%; padding: 12px; font-size: 0.9rem; border-radius: 10px; background: var(--surface-inset); color: var(--text-color); border: 1px solid var(--border-color); }
+        .measure-input-grp button { padding: 12px 20px; font-size: 0.9rem; background: var(--text-color); color: var(--surface-color); border-radius: 10px; cursor: pointer; border: none; font-weight: 700; }
+
+        /* LONG HEATMAP RANDOM CALENDAR MATRIX */
+        .calendar-scroll-container { display: flex; flex-direction: column; gap: 25px; }
+        .month-block h4 { font-size: 0.9rem; font-weight: 800; color: var(--primary-color); margin-bottom: 8px; text-transform: uppercase; border-left: 3px solid var(--accent-color); padding-left: 8px; }
+        .mini-calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+        .cal-day-header { font-size: 0.65rem; color: var(--text-muted); font-weight: 700; padding-bottom: 4px; }
+        .cal-cell { font-size: 0.75rem; padding: 6px 0; border-radius: 6px; background: var(--surface-inset); font-weight: 600; color: var(--text-color); }
+        .cal-cell.active-workout { background: var(--success-color) !important; color: #fff !important; font-weight: 800; box-shadow: 0 0 6px var(--success-glow); }
+        .cal-cell.empty-cell { background: transparent; }
+
+        /* RUNTIME HUD */
+        .dashboard-banner { background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 15px; margin-bottom: 20px; }
+        .dashboard-main-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .metric-group { display: flex; gap: 20px; }
+        .metric-box { display: flex; flex-direction: column; }
+        .metric-box .label { font-size: 0.65rem; color: var(--text-muted); font-weight: 700; text-transform: uppercase; }
+        .metric-box .value { font-size: 1.2rem; font-weight: 800; color: var(--primary-color); }
+        .btn-finish-workout { background: var(--danger-color); color: #fff; border: none; padding: 12px 20px; border-radius: 12px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
+        .session-progress-wrapper { background: var(--surface-inset); border-radius: 10px; padding: 4px; border: 1px solid var(--border-color); }
+        .session-progress-bar { height: 6px; width: 0%; background: linear-gradient(90deg, var(--primary-color), var(--accent-color)); border-radius: 4px; transition: width 0.3s; }
+        
+        .controls-card h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; }
+        .form-group { display: flex; gap: 10px; }
+        select, input, button { background-color: var(--surface-inset); color: var(--text-color); border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 600; outline: none; }
+        select { flex-grow: 1; }
+        .btn-primary-action { background: var(--text-color); color: var(--surface-color); border: none; cursor: pointer; font-weight: 700; }
+
+        .exercise-card { background-color: var(--surface-color); border-radius: 18px; padding: 20px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .exercise-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 15px; gap: 10px; }
+        .exercise-header h3 { font-size: 1.1rem; font-weight: 700; }
+        .btn-delete { background: transparent; border: 1px solid var(--border-color); color: var(--danger-color); padding: 6px 10px; border-radius: 8px; font-size: 0.75rem; cursor: pointer; }
+        
+        table { width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 15px; }
+        th { color: var(--text-muted); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+        td { padding: 10px 0; border-bottom: 1px solid var(--border-color); }
+        .set-row input[type="number"] { width: 60px; text-align: center; background-color: var(--surface-inset); padding: 6px; border-radius: 8px; font-size: 0.85rem; }
+        input[type="checkbox"].set-checkbox { appearance: none; width: 24px; height: 24px; border: 2px solid var(--border-color); border-radius: 6px; background-color: var(--surface-inset); position: relative; cursor: pointer; }
+        input[type="checkbox"].set-checkbox:checked { background-color: var(--success-color); border-color: var(--success-color); }
+        input[type="checkbox"].set-checkbox:checked::after { content: ''; position: absolute; left: 8px; top: 4px; width: 5px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+        .set-row.row-complete { background-color: rgba(0, 230, 118, 0.02); }
+        .set-row.row-complete input { opacity: 0.5; pointer-events: none; }
+        .btn-add-set { background-color: var(--surface-inset); border: 1px dashed var(--border-color); color: var(--text-muted); width: 100%; padding: 12px; font-size: 0.85rem; font-weight: 700; border-radius: 12px; cursor: pointer; }
+
+        /* SMARTPHONE STICKY BAR */
+        .bottom-nav-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 72px; background: var(--nav-bg); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; z-index: 2000; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 -4px 20px var(--nav-shadow); transition: background 0.4s ease, border 0.4s ease, box-shadow 0.4s ease; }
+        .nav-item-btn { background: transparent; border: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; width: 33.33%; height: 100%; transition: color 0.2s; }
+        .nav-item-btn.active { color: var(--primary-color); }
+        .nav-item-btn svg { width: 22px; height: 22px; fill: currentColor; }
+
+        @media (min-width: 768px) {
+            body { padding: 0 20px; }
+            .app-container { padding-bottom: 40px; }
+            .bottom-nav-bar { display: none !important; }
+            .desktop-nav-tabs { display: flex; }
+            .dashboard-grid-4x4 { grid-template-columns: 1fr 1fr; gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <!-- GATEWAY AUTH SCREEN -->
+        <div id="auth-screen" class="auth-container">
+            <div class="auth-card">
+                <div class="auth-logo"><h1>Forge</h1><p>Every Rep Shapes You</p></div>
+                <div class="auth-tabs">
+                    <button class="auth-tab active" id="tab-login-trigger">LOGIN</button>
+                    <button class="auth-tab" id="tab-signup-trigger">SIGN UP</button>
+                </div>
+                <div id="form-login" class="auth-form active">
+                    <div class="input-wrapper"><label>Email Address</label><input type="email" class="auth-input" value="forge@fitness.com"></div>
+                    <div class="input-wrapper"><label>Password</label><input type="password" class="auth-input" value="password123"></div>
+                    <button class="btn-auth-submit" id="btn-submit-login">Sign In</button>
+                    
+                    <!-- 🛠️ INTEGRASI BARU: Button Sign In with Google -->
+                    <div class="auth-divider">or</div>
+                    <button class="btn-google-login" id="btn-google-login">
+                        <svg viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v3.92h6.69c-.29 1.5-1.14 2.78-2.4 3.63v3.02h3.89c2.28-2.1 3.56-5.19 3.56-8.5z"/>
+                            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.89-3.02c-1.08.72-2.45 1.16-4.04 1.16-3.11 0-5.74-2.11-6.68-4.96H1.21v3.11C3.18 21.88 7.31 24 12 24z"/>
+                            <path fill="#FBBC05" d="M5.32 14.27c-.24-.72-.38-1.49-.38-2.27s.14-1.55.38-2.27V6.62H1.21C.44 8.24 0 10.06 0 12s.44 3.76 1.21 5.38l4.11-3.11z"/>
+                            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.18 2.12 1.21 5.62l4.11 3.11c.94-2.85 3.57-4.98 6.68-4.98z"/>
+                        </svg>
+                        Sign in with Google
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- GLOBAL TOP STICKY BAR -->
+        <div class="top-navbar">
+            <div class="header-left-side">
+                <header><h1>Forge</h1></header>
+                <div class="desktop-nav-tabs" id="desktop-nav-container">
+                    <button class="desktop-tab-btn active" data-target="nav-home-view">Home</button>
+                    <button class="desktop-tab-btn" data-target="nav-workout-view">Workout</button>
+                    <button class="desktop-tab-btn" data-target="nav-profile-view">Profile</button>
+                </div>
+            </div>
+            <button class="theme-toggle-btn" id="theme-toggle">🌓 Theme</button>
+        </div>
+
+        <!-- PAGE 1: FEED -->
+        <div id="nav-home-view" class="view-section active">
+            <div class="feed-post">
+                <div class="post-header">
+                    <div class="post-avatar"><div class="post-avatar-inner">JD</div></div>
+                    <div class="post-user-info"><h5>John_Doe_Lifting</h5><span>Jakarta, Indonesia</span></div>
+                </div>
+                <div class="post-image">
+                    <div class="post-image-placeholder">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                    </div>
+                </div>
+                <div class="post-content">
+                    <div class="post-caption"><strong>John_Doe_Lifting</strong> New PR on Deadlift today! Hit 180kg for 3 reps! 🔥💪</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 2: WORKOUT MATRIX -->
+        <div id="nav-workout-view" class="view-section">
+            <div class="motivation-banner">
+                <h4>Iron Mindset</h4>
+                <p>"Discipline is executing protocols when you don't feel motivated."</p>
+            </div>
+            <button class="btn-start-workout" id="btn-trigger-empty">🔥 Start Empty Workout</button>
+            <div class="section-title-alt">📁 Routines Templates</div>
+            <div class="routines-grid">
+                <div class="routine-card" id="routine-push"><h3>Push Day</h3><p>Chest, Shoulders, Triceps.</p></div>
+                <div class="routine-card" id="routine-pull"><h3>Pull Day</h3><p>Heavy Deadlifts and Back loading.</p></div>
+            </div>
+        </div>
+
+        <!-- PAGE 3: PROFILE (Darren Gunawan Identity Profile) -->
+        <div id="nav-profile-view" class="view-section">
+            <div class="profile-header-card">
+                <div class="profile-main-meta">
+                    <div class="profile-avatar-big" id="profile-initials">DG</div>
+                    <div class="profile-stats-row">
+                        <div class="stat-meta-box"><span class="num" id="profile-workout-count">24</span><div class="lbl">Workouts</div></div>
+                        <div class="stat-meta-box"><span class="num">1,420</span><div class="lbl">Followers</div></div>
+                        <div class="stat-meta-box"><span class="num">512</span><div class="lbl">Following</div></div>
+                    </div>
+                </div>
+                <div class="profile-bio">
+                    <h4 id="profile-display-name">Darren Gunawan</h4>
+                    <div class="profile-general-info-row">
+                        <div class="info-badge">Weight: <span id="badge-weight-val">71.0</span> kg</div>
+                        <div class="info-badge">Height: <span>175</span> cm</div>
+                    </div>
+                    <p>Chasing progressive overload every day. Fueled by data science and engineering. 🏋️‍♂️📊</p>
+                </div>
+            </div>
+
+            <div class="section-title-alt" style="margin-top: 15px;">📊 Fitness Matrix Dashboard</div>
+            
+            <div class="dashboard-grid-4x4">
+                <div class="dash-grid-card-clickable" data-modal="modal-stats">
+                    <div class="dash-card-title-group"><span class="icon">📊</span><h4>Statistics</h4></div>
+                    <span class="dash-action-arrow">➜</span>
+                </div>
+                <div class="dash-grid-card-clickable" data-modal="modal-exercises">
+                    <div class="dash-card-title-group"><span class="icon">🏋️‍♂️</span><h4>Exercises</h4></div>
+                    <span class="dash-action-arrow">➜</span>
+                </div>
+                <div class="dash-grid-card-clickable" data-modal="modal-measures">
+                    <div class="dash-card-title-group"><span class="icon">⚖️</span><h4>Measures</h4></div>
+                    <span class="dash-action-arrow">➜</span>
+                </div>
+                <div class="dash-grid-card-clickable" data-modal="modal-calendar">
+                    <div class="dash-card-title-group"><span class="icon">📅</span><h4>Calendar</h4></div>
+                    <span class="dash-action-arrow">➜</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL COMPONENT SHEETS -->
+        <div class="modal-overlay" id="modal-stats">
+            <div class="modal-content-box">
+                <div class="modal-header-row"><h3>📊 Muscle Statistics</h3><button class="btn-close-modal">✖</button></div>
+                <div class="muscle-dist-bar">
+                    <div>
+                        <div class="dist-row"><span>Legs (Dominant)</span><strong>45%</strong></div>
+                        <div class="dist-bar-bg"><div class="dist-bar-fill" style="width: 45%;"></div></div>
+                    </div>
+                    <div>
+                        <div class="dist-row"><span>Chest</span><strong>30%</strong></div>
+                        <div class="dist-bar-bg"><div class="dist-bar-fill" style="width: 30%;"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="modal-exercises">
+            <div class="modal-content-box">
+                <div class="modal-header-row"><h3>🏋️‍♂️ Complete Movement List</h3><button class="btn-close-modal">✖</button></div>
+                <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:15px; font-weight:600;">CLICK MOVEMENT TO VIEW PERSONAL BEST LOGS:</p>
+                <div id="exercise-pb-list"></div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="modal-measures">
+            <div class="modal-content-box">
+                <div class="modal-header-row"><h3>⚖️ Weight Tracker Logs</h3><button class="btn-close-modal">✖</button></div>
+                <div class="measure-widget">
+                    <div class="measure-current"><span id="current-weight-val">71.0</span> kg</div>
+                    <div class="measure-input-grp">
+                        <input type="number" id="input-weight-measure" step="0.1" placeholder="Log weight in kg...">
+                        <button id="btn-save-weight">Log</button>
+                    </div>
+                    <div style="text-align: left; margin-top: 15px;">
+                        <h5 class="section-title-alt">Weight Tracking History</h5>
+                        <div id="weight-history-list" class="mini-ex-history" style="margin-top:10px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="modal-calendar">
+            <div class="modal-content-box" style="max-width: 550px;">
+                <div class="modal-header-row"><h3>📅 5x Weekly Training Calendar</h3><button class="btn-close-modal">✖</button></div>
+                <div class="calendar-scroll-container" id="calendar-render-stack"></div>
+            </div>
+        </div>
+
+        <!-- LIVE WORKOUT HUD PANEL -->
+        <div id="session-view" class="view-section">
+            <div class="dashboard-banner">
+                <div class="dashboard-main-row">
+                    <div class="metric-group">
+                        <div class="metric-box"><span class="label">⏳ Duration</span><span id="global-duration-val" class="value">00:00</span></div>
+                        <div class="metric-box"><span class="label">📈 Volume</span><span id="global-volume-val" class="value">0 kg</span></div>
+                        <div class="metric-box"><span class="label">✅ Sets</span><span id="global-sets-val" class="value">0</span></div>
+                    </div>
+                    <button class="btn-finish-workout" id="btn-exit-session">Finish</button>
+                </div>
+                <div class="session-progress-wrapper"><div id="session-progress-bar" class="session-progress-bar"></div></div>
+            </div>
+            <div class="forge-card controls-card">
+                <h2>Add Movement</h2>
+                <div class="form-group">
+                    <select id="exercise-select">
+                        <option value="Bench Press">Bench Press</option>
+                        <option value="Barbell Squat">Barbell Squat</option>
+                        <option value="Deadlift">Deadlift</option>
+                    </select>
+                    <button class="btn-primary-action" id="btn-add-exercise">+ Add</button>
+                </div>
+            </div>
+            <div id="active-workout-stack"></div>
+        </div>
+
+        <!-- APP BOTTOM MOBILE NAVBAR STICKY SHEET -->
+        <div class="bottom-nav-bar" id="app-bottom-navigation">
+            <button class="nav-item-btn active" data-target="nav-home-view"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home</button>
+            <button class="nav-item-btn" data-target="nav-workout-view"><svg viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14 4.14 5.57 2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17l-3.57 3.57L13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43 2.14-2.14z"/></svg>Workout</button>
+            <button class="nav-item-btn" data-target="nav-profile-view"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Profile</button>
+        </div>
+
+    </div>
+
+    <script>
+        // ==========================================
+        // 1. DATA STRUCTURES & DATABASE
+        // ==========================================
+        let weightHistory = [
+            { kg: "71.0", date: "02 June 2026" },
+            { kg: "71.8", date: "25 May 2026" },
+            { kg: "72.5", date: "10 May 2026" }
+        ];
+
+        // Database Exercise yang diperluas dengan kategori Otot & Histori Set Nyata
+        const exerciseDatabase = [
+            { 
+                name: "Bench Press", 
+                pb: "90 kg", 
+                date: "28 May 2026", 
+                muscle: "chest",
+                history: [
+                    { kg: 90, reps: 4, date: "28 May 2026" },
+                    { kg: 85, reps: 6, date: "21 May 2026" },
+                    { kg: 80, reps: 8, date: "14 May 2026" }
+                ]
+            },
+            { 
+                name: "Barbell Squat", 
+                pb: "125 kg", 
+                date: "20 May 2026", 
+                muscle: "quadriceps",
+                history: [
+                    { kg: 125, reps: 5, date: "20 May 2026" },
+                    { kg: 120, reps: 6, date: "12 May 2026" }
+                ]
+            },
+            { 
+                name: "Deadlift", 
+                pb: "165 kg", 
+                date: "01 June 2026", 
+                muscle: "lower back",
+                history: [
+                    { kg: 165, reps: 2, date: "01 June 2026" },
+                    { kg: 160, reps: 4, date: "25 May 2026" }
+                ]
+            },
+            { 
+                name: "Overhead Press", 
+                pb: "55 kg", 
+                date: "14 April 2026", 
+                muscle: "shoulder",
+                history: [
+                    { kg: 55, reps: 5, date: "14 April 2026" }
+                ]
+            },
+            { 
+                name: "Dumbbell Incline Fly", 
+                pb: "24 kg", 
+                date: "19 May 2026", 
+                muscle: "chest",
+                history: [
+                    { kg: 24, reps: 10, date: "19 May 2026" }
+                ]
+            }
+        ];
+
+        // Daftar Otot sesuai permintaan Anda
+        const targetMuscles = [
+            "quadriceps", "hamstring", "glutes", "shoulder", "triceps", 
+            "upper back", "lower back", "lats", "bicep", "calves", 
+            "abdominals", "traps", "forearms", "chest"
+        ];
+
+        // Simulasi Log Set Latihan Bulanan untuk menghitung Statistik
+        // Format: { bulan_tahun: { nama_otot: total_sets } }
+        const monthlyMuscleStats = {
+            "June 2026": { quadriceps: 24, hamstring: 12, glutes: 15, shoulder: 18, triceps: 16, "upper back": 20, "lower back": 10, lats: 14, bicep: 12, calves: 8, abdominals: 10, traps: 6, forearms: 4, chest: 22 },
+            "May 2026": { quadriceps: 20, hamstring: 14, glutes: 12, shoulder: 22, triceps: 14, "upper back": 18, "lower back": 12, lats: 16, bicep: 10, calves: 10, abdominals: 8, traps: 8, forearms: 6, chest: 25 },
+            "April 2026": { quadriceps: 18, hamstring: 10, glutes: 10, shoulder: 15, triceps: 12, "upper back": 15, "lower back": 8, lats: 12, bicep: 8, calves: 6, abdominals: 6, traps: 4, forearms: 4, chest: 18 }
+        };
+
+        const monthsData = [
+            { name: "January 2025", days: 31, startDay: 3 }, { name: "February 2025", days: 28, startDay: 6 },
+            { name: "March 2025", days: 31, startDay: 6 }, { name: "April 2025", days: 30, startDay: 2 },
+            { name: "May 2025", days: 31, startDay: 4 }, { name: "June 2025", days: 30, startDay: 0 },
+            { name: "July 2025", days: 31, startDay: 2 }, { name: "August 2025", days: 31, startDay: 5 },
+            { name: "September 2025", days: 30, startDay: 1 }, { name: "October 2025", days: 31, startDay: 3 },
+            { name: "November 2025", days: 30, startDay: 6 }, { name: "December 2025", days: 31, startDay: 1 },
+            { name: "January 2026", days: 31, startDay: 4 }, { name: "February 2026", days: 28, startDay: 0 },
+            { name: "March 2026", days: 31, startDay: 0 }, { name: "April 2026", days: 30, startDay: 3 },
+            { name: "May 2026", days: 31, startDay: 5 }, { name: "June 2026", days: 30, startDay: 1 }
+        ];
+
+        let globalWorkoutTimer = null;
+        let elapsedSeconds = 0;
+        let timerIsRunning = false;
+        let totalWorkoutDoneCount = 24;
+
+        // Theme Configuration Switcher
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            document.documentElement.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+        });
+
+        // ==========================================
+        // 2. AUTHENTICATION (SIGN UP & LOGIN)[cite: 1]
+        // ==========================================
+        const authScreen = document.getElementById('auth-screen');
+        const tabLogin = document.getElementById('tab-login-trigger');
+        const tabSignup = document.getElementById('tab-signup-trigger');
+        const formLogin = document.getElementById('form-login');
+
+        if (!document.getElementById('form-signup')) {
+            const signupHTML = `
+                <div id="form-signup" class="auth-form" style="display:none; flex-direction:column; gap:15px;">
+                    <div class="input-wrapper"><label>Full Name</label><input type="text" class="auth-input" placeholder="Enter your name"></div>
+                    <div class="input-wrapper"><label>Email Address</label><input type="email" class="auth-input" placeholder="name@example.com"></div>
+                    <div class="input-wrapper"><label>Password</label><input type="password" class="auth-input" placeholder="Create password"></div>
+                    <button class="btn-auth-submit" id="btn-submit-signup">Create Account</button>
+                </div>
+            `;
+            formLogin.insertAdjacentHTML('afterend', signupHTML);
+        }
+        const formSignup = document.getElementById('form-signup');
+
+        tabSignup.addEventListener('click', () => {
+            tabSignup.classList.add('active');
+            tabLogin.classList.remove('active');
+            formSignup.style.display = 'flex';
+            formLogin.style.display = 'none';
+        });
+
+        tabLogin.addEventListener('click', () => {
+            tabLogin.classList.add('active');
+            tabSignup.classList.remove('active');
+            formLogin.style.display = 'flex';
+            formSignup.style.display = 'none';
+        });
+
+        document.getElementById('btn-submit-login').addEventListener('click', () => { authScreen.style.display = 'none'; });
+        document.getElementById('btn-submit-signup').addEventListener('click', () => { 
+            alert("Account created successfully!");
+            authScreen.style.display = 'none'; 
+        });
+
+        document.getElementById('btn-google-login').addEventListener('click', () => {
+            const btn = document.getElementById('btn-google-login');
+            btn.innerHTML = 'Connecting to Google...';
+            btn.style.opacity = '0.7';
+            btn.style.pointerEvents = 'none';
+            
+            setTimeout(() => {
+                document.getElementById('profile-display-name').textContent = "Darren Gunawan";
+                document.getElementById('profile-initials').textContent = "DG";
+                authScreen.style.display = 'none';
+            }, 1000);
+        });
+
+        // Navigation Layout Controller
+        const mobileNavButtons = document.querySelectorAll('.nav-item-btn');
+        const desktopNavButtons = document.querySelectorAll('.desktop-tab-btn');
+        const viewSections = document.querySelectorAll('.view-section');
+        const bottomNavBar = document.getElementById('app-bottom-navigation');
+
+        function switchActiveNavigationPage(targetViewId) {
+            mobileNavButtons.forEach(b => b.classList.toggle('active', b.getAttribute('data-target') === targetViewId));
+            desktopNavButtons.forEach(b => b.classList.toggle('active', b.getAttribute('data-target') === targetViewId));
+            viewSections.forEach(v => v.classList.toggle('active', v.id === targetViewId));
+            
+            // Render statistik jika masuk ke menu analytics/statistik
+            if (targetViewId === 'nav-analytics-view' || targetViewId === 'analytics') {
+                initAnalyticsView();
+            }
+        }
+
+        mobileNavButtons.forEach(btn => btn.addEventListener('click', function() { switchActiveNavigationPage(this.getAttribute('data-target')); }));
+        desktopNavButtons.forEach(btn => btn.addEventListener('click', function() { switchActiveNavigationPage(this.getAttribute('data-target')); }));
+
+        // Modal / Overlays
+        const clickableCards = document.querySelectorAll('.dash-grid-card-clickable');
+        const closeOverlayButtons = document.querySelectorAll('.btn-close-modal');
+        const modalOverlays = document.querySelectorAll('.modal-overlay');
+
+        clickableCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const targetModal = document.getElementById(card.getAttribute('data-modal'));
+                if (targetModal) targetModal.classList.add('active');
+            });
+        });
+
+        closeOverlayButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => { e.stopPropagation(); btn.closest('.modal-overlay').classList.remove('active'); });
+        });
+
+        modalOverlays.forEach(overlay => {
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); });
+        });
+
+        // ==========================================
+        // 3. FITUR BARU: INJECT DROPDOWN & ANALYTICS ENGINE
+        // ==========================================
+        function initAnalyticsView() {
+            // Cari container utama di view analitik
+            const analyticsContainer = document.getElementById('nav-analytics-view') || document.getElementById('analytics');
+            if (!analyticsContainer) return;
+
+            // Bersihkan atau buat struktur antarmuka baru jika belum ada
+            analyticsContainer.innerHTML = `
+                <div style="padding: 20px; max-width: 600px; margin: 0 auto; font-family: sans-serif;">
+                    <h2 style="margin-bottom: 15px;">Volume & Muscle Statistics</h2>
+                    
+                    <label for="month-picker" style="display:block; margin-bottom: 5px; font-weight: bold;">Pilih Bulan:</label>
+                    <select id="month-picker" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; background: var(--bg-card); color: var(--text-main); margin-bottom: 20px;">
+                        <option value="June 2026">June 2026</option>
+                        <option value="May 2026">May 2026</option>
+                        <option value="April 2026">April 2026</option>
+                    </select>
+
+                    <div id="muscle-stats-render" style="display: flex; flex-direction: column; gap: 12px;"></div>
+                </div>
+            `;
+
+            const monthPicker = document.getElementById('month-picker');
+            monthPicker.addEventListener('change', (e) => {
+                renderMuscleVolumeStats(e.target.value);
+            });
+
+            // Render data default awal (Bulan teratas)
+            renderMuscleVolumeStats(monthPicker.value);
+        }
+
+        function renderMuscleVolumeStats(selectedMonth) {
+            const renderContainer = document.getElementById('muscle-stats-render');
+            if (!renderContainer) return;
+
+            // Cari index bulan saat ini untuk mencari bulan sebelumnya
+            const availableMonths = ["April 2026", "May 2026", "June 2026"];
+            const currentIndex = availableMonths.indexOf(selectedMonth);
+            const previousMonth = currentIndex > 0 ? availableMonths[currentIndex - 1] : null;
+
+            const currentData = monthlyMuscleStats[selectedMonth] || {};
+            const previousData = previousMonth ? (monthlyMuscleStats[previousMonth] || {}) : null;
+
+            let htmlContent = "";
+
+            targetMuscles.forEach(muscle => {
+                const currentSets = currentData[muscle] || 0;
+                let comparisonHTML = `<span style="font-size: 0.8rem; color: var(--text-muted);">No prev data</span>`;
+
+                if (previousData) {
+                    const prevSets = previousData[muscle] || 0;
+                    if (prevSets === 0 && currentSets > 0) {
+                        comparisonHTML = `<span style="font-size: 0.8rem; color: #4cd137; font-weight: bold;">+100% vs last month</span>`;
+                    } else if (prevSets === 0 && currentSets === 0) {
+                        comparisonHTML = `<span style="font-size: 0.8rem; color: var(--text-muted);">0% vs last month</span>`;
+                    } else {
+                        const diffPercent = ((currentSets - prevSets) / prevSets) * 100;
+                        if (diffPercent > 0) {
+                            comparisonHTML = `<span style="font-size: 0.8rem; color: #4cd137; font-weight: bold;">+${diffPercent.toFixed(0)}% vs last month</span>`;
+                        } else if (diffPercent < 0) {
+                            comparisonHTML = `<span style="font-size: 0.8rem; color: #e84118; font-weight: bold;">${diffPercent.toFixed(0)}% vs last month</span>`;
+                        } else {
+                            comparisonHTML = `<span style="font-size: 0.8rem; color: var(--text-muted);">0% vs last month</span>`;
+                        }
+                    }
+                }
+
+                htmlContent += `
+                    <div style="background: rgba(255,255,255,0.05); padding: 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid var(--primary-color);">
+                        <div>
+                            <strong style="text-transform: capitalize; font-size: 0.95rem; display: block;">${muscle}</strong>
+                            ${comparisonHTML}
+                        </div>
+                        <div style="text-align: right;">
+                            <span style="font-size: 1.2rem; font-weight: bold; color: var(--primary-color);">${currentSets}</span> 
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">sets</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            renderContainer.innerHTML = htmlContent;
+        }
+
+        // ==========================================
+        // 4. FITUR BARU: HISTORI DETAIL & ESTIMASI 1RM
+        // ==========================================
+        // Fungsi menghitung perkiraan berat 1 Rep Max menggunakan rumus Epley
+        function calculateEpley1RM(weight, reps) {
+            if (reps === 1) return weight;
+            return weight * (1 + reps / 30);
+        }
+
+        function renderExerciseDatabaseList() {
+            const pbListContainer = document.getElementById('exercise-pb-list');
+            if (!pbListContainer) return;
+
+            pbListContainer.innerHTML = exerciseDatabase.map((ex, index) => `
+                <div class="pb-clickable-row" style="cursor: pointer; padding: 10px; margin-bottom: 8px; background: rgba(255,255,255,0.03); border-radius: 6px;" onclick="showExerciseHistoryDetails(${index})">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div><strong style="display:block; font-size:0.95rem;">${ex.name}</strong><span style="font-size:0.75rem; color:var(--text-muted); text-transform: capitalize;">Target: ${ex.muscle}</span></div>
+                        <div style="text-align:right;"><span style="font-size:0.95rem; color:var(--primary-color); font-weight:800;">PB: ${ex.pb}</span></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Tampilan Detail Histori Saat Baris Latihan Di-klik
+        window.showExerciseHistoryDetails = function(index) {
+            const ex = exerciseDatabase[index];
+            
+            let historyRowsHTML = "";
+            let globalBest1RM = 0;
+
+            if (ex.history && ex.history.length > 0) {
+                ex.history.forEach(session => {
+                    const calculated1RM = calculateEpley1RM(session.kg, session.reps);
+                    if (calculated1RM > globalBest1RM) {
+                        globalBest1RM = calculated1RM;
+                    }
+
+                    historyRowsHTML += `
+                        <div style="display:flex; justify-content:space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+                            <span style="font-weight: 500;">${session.kg}kg × ${session.reps} reps</span>
+                            <span style="font-size:0.8rem; color:var(--text-muted);">${session.date}</span>
+                        </div>
+                    `;
+                });
+            } else {
+                historyRowsHTML = `<div style="color:var(--text-muted); padding: 10px 0;">Belum ada record histori trek.</div>`;
+            }
+
+            // Tampilkan Box Alert/Modal Khusus Kustomisasi agar UI Cantik
+            const modalId = 'history-detail-popup';
+            let customModal = document.getElementById(modalId);
+            
+            if (!customModal) {
+                customModal = document.createElement('div');
+                customModal.id = modalId;
+                customModal.style = "position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; z-index:9999; padding:20px;";
+                document.body.appendChild(customModal);
+            }
+
+            customModal.innerHTML = `
+                <div style="background:#1e272e; color:#fff; width:100%; max-width:400px; padding:20px; border-radius:12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                    <div style="display:flex; justify-content:between; align-items:center; margin-bottom:15px;">
+                        <h3 style="margin:0; font-size:1.2rem;">${ex.name} Log History</h3>
+                        <button onclick="document.getElementById('${modalId}').style.display='none'" style="background:none; border:none; color:#fff; font-size:1.2rem; cursor:pointer; margin-left:auto;">✖</button>
+                    </div>
+                    
+                    <div style="background:rgba(255,165,0,0.1); border: 1px dashed orange; padding:10px; border-radius:8px; margin-bottom:15px; text-align:center;">
+                        <span style="font-size:0.85rem; color:orange; display:block; font-weight:bold;">Estimated Best 1 Rep Max (1RM)</span>
+                        <strong style="font-size:1.5rem; color:#fff;">${globalBest1RM > 0 ? globalBest1RM.toFixed(1) + ' kg' : 'N/A'}</strong>
+                    </div>
+
+                    <div style="max-height: 200px; overflow-y:auto; margin-bottom:10px;">
+                        <h4 style="margin: 0 0 8px 0; font-size:0.9rem; color:var(--primary-color);">Past Sets Log:</h4>
+                        ${historyRowsHTML}
+                    </div>
+                </div>
+            `;
+            customModal.style.display = 'flex';
+        };
+
+        // ==========================================
+        // 5. KALENDER & WORKOUT WORKSPACE ENGINE
+        // ==========================================
+        function buildRandomizedTrainingDays(totalDays) {
+            let selectedDays = [];
+            for (let weekStart = 0; weekStart < totalDays; weekStart += 7) {
+                let currentWeekIndices = [0, 1, 2, 3, 4, 5, 6];
+                let shuffledDays = currentWeekIndices.sort(() => 0.5 - Math.random());
+                let pickFiveTrainingDays = shuffledDays.slice(0, 5); 
+                
+                pickFiveTrainingDays.forEach(dayOffset => {
+                    let calibratedDay = weekStart + dayOffset + 1;
+                    if (calibratedDay <= totalDays) selectedDays.push(calibratedDay);
+                });
+            }
+            return selectedDays;
+        }
+
+        function renderCalendarMatrix() {
+            const container = document.getElementById('calendar-render-stack');
+            if (!container) return;
+            container.innerHTML = "";
+            
+            monthsData.forEach(m => {
+                const generatedWorkouts = buildRandomizedTrainingDays(m.days);
+                const block = document.createElement('div');
+                block.className = 'month-block';
+                
+                let gridHTML = `<h4>${m.name}</h4><div class="mini-calendar-grid">
+                    <div class="cal-day-header">M</div><div class="cal-day-header">T</div><div class="cal-day-header">W</div>
+                    <div class="cal-day-header">T</div><div class="cal-day-header">F</div><div class="cal-day-header">S</div>
+                    <div class="cal-day-header">S</div>`;
+
+                for (let i = 0; i < m.startDay; i++) gridHTML += `<div class="cal-cell empty-cell"></div>`;
+
+                for (let d = 1; d <= m.days; d++) {
+                    const hasActiveRecord = generatedWorkouts.includes(d);
+                    gridHTML += `<div class="cal-cell ${hasActiveRecord ? 'active-workout' : ''}">${d}</div>`;
+                }
+                gridHTML += `</div>`;
+                block.innerHTML = gridHTML;
+                container.appendChild(block);
+            });
+        }
+
+        // Weight Tracker UI Update
+        document.getElementById('btn-save-weight').addEventListener('click', () => {
+            const weightInput = document.getElementById('input-weight-measure');
+            if (weightInput && weightInput.value) {
+                const formattedDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+                weightHistory.unshift({ kg: parseFloat(weightInput.value).toFixed(1), date: formattedDate });
+                updateWeightUI(parseFloat(weightInput.value).toFixed(1));
+                weightInput.value = '';
+            }
+        });
+
+        function updateWeightUI(latestWeightValue) {
+            const currentW = document.getElementById('current-weight-val');
+            const badgeW = document.getElementById('badge-weight-val');
+            const historyContainer = document.getElementById('weight-history-list');
+            
+            if(currentW) currentW.textContent = latestWeightValue;
+            if(badgeW) badgeW.textContent = latestWeightValue;
+            if(historyContainer) {
+                historyContainer.innerHTML = weightHistory.map(item => `
+                    <div class="mini-ex-item"><div>${item.kg} kg</div><span>${item.date}</span></div>
+                `).join('');
+            }
+        }
+
+        // RUNTIME WORKOUT ENGINE CONTROLLER
+        const liveSessionView = document.getElementById('session-view');
+        const btnTriggerEmpty = document.getElementById('btn-trigger-empty');
+        const btnExitSession = document.getElementById('btn-exit-session');
+        const btnAddExercise = document.getElementById('btn-add-exercise');
+        const exerciseSelect = document.getElementById('exercise-select');
+        const activeWorkoutStack = document.getElementById('active-workout-stack');
+        const globalDurationVal = document.getElementById('global-duration-val');
+        const globalVolumeVal = document.getElementById('global-volume-val');
+        const globalSetsVal = document.getElementById('global-sets-val');
+        const progressBar = document.getElementById('session-progress-bar');
+
+        if(btnTriggerEmpty) btnTriggerEmpty.addEventListener('click', () => { activeWorkoutStack.innerHTML = ""; openLiveTrainingWorkspace(true); });
+        if(btnExitSession) btnExitSession.addEventListener('click', () => { closeAndSaveLiveSession(); });
+        if(btnAddExercise) btnAddExercise.addEventListener('click', () => { appendExerciseBlock(exerciseSelect.value); recalculateGlobalMetrics(); });
+
+        function openLiveTrainingWorkspace(shouldResetClock = false) {
+            viewSections.forEach(v => v.classList.remove('active'));
+            if(liveSessionView) liveSessionView.classList.add('active');
+            if(bottomNavBar) bottomNavBar.style.setProperty('display', 'none', 'important');
+            if (shouldResetClock || !timerIsRunning) startGlobalDurationClock();
+        }
+
+        function closeAndSaveLiveSession() {
+            if (confirm("Do you want to finalize this training session?")) {
+                stopGlobalDurationClock();
+                if(activeWorkoutStack) activeWorkoutStack.innerHTML = "";
+                if(liveSessionView) liveSessionView.classList.remove('active');
+                const targetView = document.getElementById('nav-workout-view');
+                if(targetView) targetView.classList.add('active');
+                if(window.innerWidth < 768 && bottomNavBar) bottomNavBar.style.setProperty('display', 'flex', 'important');
+                totalWorkoutDoneCount++;
+                const profCount = document.getElementById('profile-workout-count');
+                if(profCount) profCount.textContent = totalWorkoutDoneCount;
+                recalculateGlobalMetrics();
+            }
+        }
+
+        function startGlobalDurationClock() {
+            if(globalWorkoutTimer) clearInterval(globalWorkoutTimer);
+            elapsedSeconds = 0; timerIsRunning = true;
+            globalWorkoutTimer = setInterval(() => {
+                elapsedSeconds++;
+                const m = Math.floor(elapsedSeconds / 60); const s = elapsedSeconds % 60;
+                if(globalDurationVal) globalDurationVal.textContent = `${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+            }, 1000);
+        }
+
+        function stopGlobalDurationClock() { clearInterval(globalWorkoutTimer); timerIsRunning = false; }
+
+        function appendExerciseBlock(name) {
+            const card = document.createElement('div');
+            card.className = 'exercise-card';
+            card.innerHTML = `
+                <div class="exercise-header"><h3>${name}</h3><button class="btn-delete">✖</button></div>
+                <table><thead><tr><th>Set</th><th>Kg</th><th>Reps</th><th>Done</th></tr></thead><tbody class="sets-tbody"></tbody></table>
+                <button class="btn-add-set">+ Add New Set</button>
+            `;
+            const tbody = card.querySelector('.sets-tbody');
+            card.querySelector('.btn-delete').addEventListener('click', () => { card.remove(); recalculateGlobalMetrics(); });
+            card.querySelector('.btn-add-set').addEventListener('click', () => { injectSetRow(tbody); recalculateGlobalMetrics(); });
+            injectSetRow(tbody);
+            if(activeWorkoutStack) activeWorkoutStack.appendChild(card);
+        }
+
+        function injectSetRow(tbody) {
+            const row = document.createElement('tr');
+            row.className = 'set-row';
+            row.innerHTML = `
+                <td><strong>${tbody.children.length + 1}</strong></td>
+                <td><input type="number" class="input-kg"></td>
+                <td><input type="number" class="input-reps"></td>
+                <td><input type="checkbox" class="set-checkbox"></td>
+            `;
+            row.querySelector('.set-checkbox').addEventListener('change', function() {
+                if (this.checked) row.classList.add('row-complete');
+                else row.classList.remove('row-complete');
+                recalculateGlobalMetrics();
+            });
+            tbody.appendChild(row);
+        }
+
+        function recalculateGlobalMetrics() {
+            let vol = 0; let sets = 0;
+            const allRows = document.querySelectorAll('.set-row');
+            allRows.forEach(row => {
+                if (row.querySelector('.set-checkbox').checked) {
+                    sets++;
+                    vol += (parseFloat(row.querySelector('.input-kg').value) || 0) * (parseInt(row.querySelector('.input-reps').value) || 0);
+                }
+            });
+            if(globalSetsVal) globalSetsVal.textContent = sets;
+            if(globalVolumeVal) globalVolumeVal.textContent = `${vol} kg`;
+            if(progressBar) progressBar.style.width = allRows.length ? `${(sets / allRows.length) * 100}%` : '0%';
+        }
+
+        // INITIALIZATION RUNTIME
+        renderCalendarMatrix();
+        updateWeightUI("71.0");
+        renderExerciseDatabaseList();
+    </script>
+</body>
+</html>
